@@ -1,0 +1,8 @@
+pip2spec
+========
+
+This project aims at providing an easy way to generate a spec file
+for projects hosted on pypi:
+http://pypi.python.org/pypi
+
+
