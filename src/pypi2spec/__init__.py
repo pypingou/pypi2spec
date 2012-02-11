@@ -32,7 +32,7 @@ from tarfile import TarError
 
 logging.basicConfig()
 LOG = logging.getLogger('Pypi2spec')
-LOG.setLevel('DEBUG')
+#LOG.setLevel('DEBUG')
 __version__ = '0.1.0'
 
 
@@ -324,6 +324,13 @@ class Pypi2specUI(object):
             from spec import Spec
             self.setup_parser()
             args = self.parser.parse_args()
+
+            self.log = get_logger()
+            if args.verbose:
+                self.log.setLevel('INFO')
+            if args.debug:
+                self.log.setLevel('DEBUG')
+
             pypi = Pypi2spec(args.package)
             pypi.retrieve_info()
             pypi.download()
