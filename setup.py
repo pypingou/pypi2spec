@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import sys
 import re
-from setuptools import setup
 
+from distutils.core import setup
 from src.pypi2spec import __version__
 
 setup(
@@ -19,8 +19,6 @@ setup(
     download_url = "http://github.com/pypingou/pypi2spec-%s.tar.gz" % __version__,
 	 package_dir = {'pypi2spec': 'src/pypi2spec'},
     packages = ['pypi2spec'],
-    entry_points = {
-	    'console_scripts': ('pypi2spec = pypi2spec.Pypi2specUI:main'),
-    },
+	 scripts=['pypi2spec'],
 )
 
