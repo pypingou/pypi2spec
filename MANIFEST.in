@@ -1,0 +1,4 @@
+include README 
+include LICENSE
+include src/pypi2spec/specfile.tpl
+include pypi2spec.spec
