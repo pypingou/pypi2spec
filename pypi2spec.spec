@@ -10,6 +10,10 @@ Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  python-devel
 
+Requires:       python-rdflib
+Requires:       python-jinja2
+Requires:       python-argparse
+
 %description
 pypi2spec makes your life easier by helping you to generate
 spec file as close to the Fedora guidelines as possible for
