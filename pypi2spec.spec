@@ -26,6 +26,8 @@ project hosted on pypi.
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+install src/pypi2spec/specfile.tpl %{buildroot}/%{python_sitelib}/pypi2spec/
+chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
 
  
 %files
