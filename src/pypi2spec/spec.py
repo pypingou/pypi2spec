@@ -105,7 +105,8 @@ class Spec:
         self.__dict['version'] = self.package.version
         self.__dict['summary'] = self.package.summary
         self.__dict['license'] = self.package.license
-        self.__dict['description'] = format_description(self.package.description)
+        self.__dict['description'] = format_description(
+            self.package.description)
         self.__dict['URL'] = self.package.url
         self.__dict['source0'] = self.package.source0
         self.__dict['packager'] = self.settings.get('packager')

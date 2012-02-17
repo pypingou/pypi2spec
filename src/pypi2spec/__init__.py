@@ -62,6 +62,7 @@ def save_config(configfile, parser):
     parser.write(conf)
     conf.close()
 
+
 def get_logger():
     """ Return the logger. """
     return LOG
@@ -161,6 +162,7 @@ class Settings(object):
             else:
                 parser.set(section, name, self._dict[name])
 
+
 class Pypi2specError(Exception):
     """ Pypi2specError class
     Template for all the error of the project
@@ -202,7 +204,7 @@ class Pypi2spec(object):
         Let arch to None if could not determine.
         """
         self.log.info('Determining if the package is arch dependant or not')
-        extensions = ['c', 'C', 'cp', 'cpp', 'h', 'H',]
+        extensions = ['c', 'C', 'cp', 'cpp', 'h', 'H', ]
         if os.path.exists(self.name):
             for root, dirs, files in os.walk(self.name):
                 for entry in files:
@@ -296,9 +298,11 @@ class Pypi2spec(object):
             predicate=DOAP['shortdesc'])
         self.description = g.value(subject=project_node,
             predicate=DOAP['description'])
-        self.source0 = 'http://pypi.python.org/packages/source/p/%s/%s-%s.tar.gz' % \
-        (self.name, self.name, self.version)
+        pypi_base = 'http://pypi.python.org/packages/source/'
+        self.source0 = pypi_base + 'p/%s/%s-%s.tar.gz' % \
+            (self.name, self.name, self.version)
         self.source = '%s-%s.tar.gz' % (self.name, self.version)
+
 
 class Pypi2specUI(object):
     """ Class handling the user interface. """
