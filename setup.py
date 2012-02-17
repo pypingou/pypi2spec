@@ -17,8 +17,8 @@ setup(
     license = "GPLv3+",
     long_description = 'pypi2spec makes you life easier at packaging pypi project for Fedora',
     download_url = "http://github.com/pypingou/pypi2spec-%s.tar.gz" % __version__,
-	 package_dir = {'pypi2spec': 'src/pypi2spec'},
+    package_dir = {'pypi2spec': 'src/pypi2spec'},
     packages = ['pypi2spec'],
-	 scripts=['pypi2spec'],
+    scripts=['pypi2spec'],
 )
 
