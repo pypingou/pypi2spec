@@ -2,8 +2,8 @@
 import sys
 import re
 
-from distutils.core import setup
-from src.pypi2spec import __version__
+from setuptools import setup
+from pypi2spec import __version__
 
 description = "Small library to help you generate spec file for pypi project."
 
@@ -25,7 +25,14 @@ setup(
     license="GPLv3+",
     long_description=long_description,
     download_url=download_url,
-    package_dir={'pypi2spec': 'src/pypi2spec'},
     packages=['pypi2spec'],
-    scripts=['pypi2spec'],
+    install_requires=[
+        'rdflib',
+        'jinja2',
+        'argparse',
+    ],
+    entry_points="""
+    [console_scripts]
+    pypi2spec = pypi2spec:main
+    """
 )
