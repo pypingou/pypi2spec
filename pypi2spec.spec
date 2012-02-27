@@ -8,7 +8,7 @@ URL:            http://github.com/pypingou/pypi2spec
 Source0:        %{name}-%{version}.tar.gz
 
 BuildArch:      noarch
-BuildRequires:  python-devel
+BuildRequires:  python-devel,python-setuptools
 
 Requires:       python-rdflib
 Requires:       python-jinja2
