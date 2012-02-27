@@ -20,20 +20,18 @@
 import argparse
 import ConfigParser
 import logging
-import rdflib
 import shutil
 import tarfile
 import os
 import urllib2
 
-from rdflib import Namespace, BNode
 from subprocess import Popen, PIPE
 from tarfile import TarError
 
 logging.basicConfig()
 LOG = logging.getLogger('Pypi2spec')
 #LOG.setLevel('DEBUG')
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 def create_conf(configfile):
@@ -277,6 +275,7 @@ class Pypi2spec(object):
         """ Retrieve all the information from pypi to fill up the spec
         file.
         """
+        import rdflib
         g = rdflib.Graph()
         try:
             g.parse('http://pypi.python.org/pypi?:action=doap&name=%s' % \
@@ -286,8 +285,8 @@ class Pypi2spec(object):
                 % err)
             raise Pypi2specError('Could not retrieve information for the'
                 'project "%s". Did you make a typo?' % self.name)
-        DOAP = Namespace('http://usefulinc.com/ns/doap#')
-        RDFS = Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+        DOAP = rdflib.Namespace('http://usefulinc.com/ns/doap#')
+        RDFS = rdflib.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
         version_node = g.value(predicate=RDFS['type'],
             object=DOAP['Version'])
         self.version = g.value(subject=version_node,
@@ -349,5 +348,9 @@ class Pypi2specUI(object):
         except Pypi2specError, err:
             print err
 
+
+def main():
+    return Pypi2specUI().main()
+
 if __name__ == '__main__':
-    Pypi2specUI().main()
+    main()

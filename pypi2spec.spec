@@ -1,5 +1,5 @@
 Name:           pypi2spec
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Python script to generate spec file for pypi projects
 
@@ -30,7 +30,7 @@ project hosted on pypi.
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-install src/pypi2spec/specfile.tpl %{buildroot}/%{python_sitelib}/pypi2spec/
+install pypi2spec/specfile.tpl %{buildroot}/%{python_sitelib}/pypi2spec/
 chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
 
  
@@ -40,5 +40,8 @@ chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
 %{_bindir}/%{name}
 
 %changelog
+* Mon Feb 27 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-1
+- Changed to use setuptools instead of distutils
+- Misc bugfixes
 * Sat Feb 11 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.0-1
 - Initial package for Fedora
