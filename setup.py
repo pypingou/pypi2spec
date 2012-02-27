@@ -7,7 +7,7 @@ from src.pypi2spec import __version__
 
 description = "Small library to help you generate spec file for pypi project."
 
-long_desription = """
+long_description = """
 pypi2spec makes you life easier at packaging pypi project for Fedora.
 """
 
