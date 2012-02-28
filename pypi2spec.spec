@@ -41,6 +41,7 @@ chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
 
 %changelog
 * Mon Feb 27 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-1
+- Changed to use textwrap to format descriptions
 - Changed to use setuptools instead of distutils
 - Misc bugfixes
 * Sat Feb 11 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.0-1
