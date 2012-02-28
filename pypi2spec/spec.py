@@ -25,6 +25,7 @@ import datetime
 import os
 import re
 import sys
+import textwrap
 from jinja2 import Template
 try:
     from pypi2spec import get_logger, get_rpm_tag, Pypi2specError
@@ -34,20 +35,18 @@ except ImportError:
 
 def format_description(description):
     """ Format the description as required by rpm """
-    step = 75
-    cnt = 0
-    out = []
-    char = 0
-    while cnt < len(description) and char < description.rfind(" "):
-        if len(description[cnt:]) >= step:
-            char = description[cnt: cnt + step].rfind(" ") + cnt
-            out.append(description[cnt: char])
-            cnt = char + 1
-        else:
-            out.append(description[cnt:])
-            cnt += len(description[cnt:])
 
-    return "\n".join(out)
+    # Return the description unadulterated if it is already valid.
+    if not any([len(line) > 75 for line in description.split('\n')]):
+        return description
+
+    # Otherwise, run it through the textwrap module.  This can have a
+    # destructive affect on reStructuredText markup.
+    wrapper = textwrap.TextWrapper(width=75)
+    # First, remove trailing whitespace from every line
+    cleaned = '\n'.join([l.strip() for l in description.split('\n')])
+    # Format each paragraph into 75 chars per line and re-join
+    return '\n\n'.join([wrapper.fill(p) for p in cleaned.split('\n\n')])
 
 
 def format_dependencies(dependencies):
