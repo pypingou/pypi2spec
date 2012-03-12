@@ -1,5 +1,4 @@
-include README 
+include README
 include LICENSE
-include src/pypi2spec/specfile.tpl
 include pypi2spec.spec
-include src/__init__.py
+graft pypi2spec

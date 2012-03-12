@@ -13,6 +13,16 @@ pypi2spec makes you life easier at packaging pypi project for Fedora.
 
 download_url = "http://github.com/pypingou/pypi2spec-%s.tar.gz" % __version__
 
+requirements = [
+    'rdflib',
+    'jinja2',
+]
+
+try:
+    import argparse
+except ImportError:
+    requirements.append('argparse')
+
 setup(
     name='pypi2spec',
     version=__version__,
@@ -26,11 +36,7 @@ setup(
     long_description=long_description,
     download_url=download_url,
     packages=['pypi2spec'],
-    install_requires=[
-        'rdflib',
-        'jinja2',
-        'argparse',
-    ],
+    install_requires=requirements,
     entry_points="""
     [console_scripts]
     pypi2spec = pypi2spec:main
