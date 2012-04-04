@@ -298,8 +298,8 @@ class Pypi2spec(object):
         self.description = g.value(subject=project_node,
             predicate=DOAP['description'])
         pypi_base = 'http://pypi.python.org/packages/source/'
-        self.source0 = pypi_base + 'p/%s/%s-%s.tar.gz' % \
-            (self.name, self.name, self.version)
+        self.source0 = pypi_base + '%s/%s/%s-%s.tar.gz' % \
+            (self.name[0], self.name, self.name, self.version)
         self.source = '%s-%s.tar.gz' % (self.name, self.version)
 
 
