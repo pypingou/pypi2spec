@@ -1,4 +1,4 @@
-Name:             {{name}}
+Name:             python-{{name}}
 Version:          {{version}}
 Release:          1%{?dist}
 Summary:          {{summary}}
@@ -17,7 +17,7 @@ BuildRequires:    python-devel
 {{description}}
 
 %prep
-%setup -q
+%setup -q -n {{name}}-%{version}
 
 %build
 {% if (arch == True) %} CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
