@@ -11,7 +11,7 @@ Source0:          {{source0}}
 {% if (arch == False) %}BuildArch:        noarch
 {% endif %}
 
-BuildRequires:    python-devel
+BuildRequires:    python2-devel
 
 %description
 {{description}}
