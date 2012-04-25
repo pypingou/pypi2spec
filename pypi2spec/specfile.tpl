@@ -28,7 +28,6 @@ BuildRequires:    python2-devel
 
 
 %files
-%defattr(-,root,root,-)
 %doc
 {% if (arch == False) %}
 %{python_sitelib}/* {% else %}
