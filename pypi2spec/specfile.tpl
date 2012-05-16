@@ -32,8 +32,11 @@ BuildRequires:    python2-devel
 %files
 %doc
 {% if (arch == False) %}
-%{python_sitelib}/* {% else %}
-%{python_sitearch}/*
+%{python_sitelib}/%{modname}
+%{python_sitelib}/%{modname}-%{version}*
+{% else %}
+%{python_sitearch}/%{modname}
+%{python_sitearch}/%{modname}-%{version}*
 {% endif %}
 
 %changelog
