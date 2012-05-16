@@ -1,4 +1,6 @@
-Name:             {{name}}
+%global modname {{name}}
+
+Name:             python-{{name}}
 Version:          {{version}}
 Release:          1%{?dist}
 Summary:          {{summary}}
@@ -11,13 +13,13 @@ Source0:          {{source0}}
 {% if (arch == False) %}BuildArch:        noarch
 {% endif %}
 
-BuildRequires:    python-devel
+BuildRequires:    python2-devel
 
 %description
 {{description}}
 
 %prep
-%setup -q
+%setup -q -n %{modname}-%{version}
 
 %build
 {% if (arch == True) %} CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
@@ -28,11 +30,13 @@ BuildRequires:    python-devel
 
 
 %files
-%defattr(-,root,root,-)
 %doc
 {% if (arch == False) %}
-%{python_sitelib}/* {% else %}
-%{python_sitearch}/*
+%{python_sitelib}/%{modname}
+%{python_sitelib}/%{modname}-%{version}*
+{% else %}
+%{python_sitearch}/%{modname}
+%{python_sitearch}/%{modname}-%{version}*
 {% endif %}
 
 %changelog
