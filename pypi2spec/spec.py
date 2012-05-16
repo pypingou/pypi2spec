@@ -117,7 +117,7 @@ class Spec:
         """ Return the path to the spec file.
         """
         specdir = get_rpm_tag('_specdir')
-        specname = '%s.spec' % self.package.name
+        specname = 'python-%s.spec' % self.package.name
         return '%s/%s' % (specdir, specname)
 
     def read_specfile(self):
