@@ -1,3 +1,5 @@
+%global modname {{name}}
+
 Name:             python-{{name}}
 Version:          {{version}}
 Release:          1%{?dist}
@@ -17,7 +19,7 @@ BuildRequires:    python2-devel
 {{description}}
 
 %prep
-%setup -q -n {{name}}-%{version}
+%setup -q -n %{modname}-%{version}
 
 %build
 {% if (arch == True) %} CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
