@@ -11,7 +11,7 @@ long_description = """
 pypi2spec makes you life easier at packaging pypi project for Fedora.
 """
 
-download_url = "http://github.com/pypingou/pypi2spec-%s.tar.gz" % __version__
+download_url = "http://pypi.python.org/packages/source/p/pypi2spec/pypi2spec-%s.tar.gz" % __version__
 
 requirements = [
     'rdflib',
