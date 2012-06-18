@@ -41,5 +41,14 @@ setup(
     entry_points="""
     [console_scripts]
     pypi2spec = pypi2spec:main
-    """
+    """,
+    classifiers = [
+        "Programming Language :: Python",
+        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "Operating System :: OS Independent",
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Environment :: Console",
+        ],
+
 )
