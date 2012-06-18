@@ -1,11 +1,11 @@
 Name:           pypi2spec
-Version:        0.2.0
+Version:        0.2.2
 Release:        1%{?dist}
 Summary:        Python script to generate spec file for pypi projects
 
 License:        GPLv3+
 URL:            http://github.com/pypingou/pypi2spec
-Source0:        %{name}-%{version}.tar.gz
+Source0:        http://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python-devel,python-setuptools
@@ -40,6 +40,10 @@ chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
 %{_bindir}/%{name}
 
 %changelog
+* Mon Jun 18 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.2.2-1
+- Roll up a 0.2.2 release with the correct download url in the setup.py
+- Fix the Source0 url
+
 * Mon Jun 18 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.2.0-1
 - Roll up a 0.2.0 release which includes a number of fixes from Ralph
 
