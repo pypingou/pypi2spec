@@ -1,5 +1,5 @@
 Name:           pypi2spec
-Version:        0.1.1
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        Python script to generate spec file for pypi projects
 
@@ -40,9 +40,13 @@ chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
 %{_bindir}/%{name}
 
 %changelog
+* Mon Jun 18 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.2.0-1
+- Roll up a 0.2.0 release which includes a number of fixes from Ralph
+
 * Mon Feb 27 2012 Ralph Bean <rbean@redhat.com> - 0.1.1-1
 - Changed to use textwrap to format descriptions
 - Changed to use setuptools instead of distutils
 - Misc bugfixes
+
 * Sat Feb 11 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.1.0-1
 - Initial package for Fedora
