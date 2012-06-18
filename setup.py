@@ -36,6 +36,7 @@ setup(
     long_description=long_description,
     download_url=download_url,
     packages=['pypi2spec'],
+    include_package_data=True,
     install_requires=requirements,
     entry_points="""
     [console_scripts]
