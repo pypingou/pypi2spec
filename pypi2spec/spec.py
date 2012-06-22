@@ -108,6 +108,9 @@ class Spec:
             self.package.description)
         self.__dict['URL'] = self.package.url
         self.__dict['source0'] = self.package.source0
+        self.__dict['_source0'] = self.package.source0\
+                .replace(self.package.name, "%{modname}")\
+                .replace(self.package.version, "%{version}")
         self.__dict['packager'] = self.settings.get('packager')
         self.__dict['email'] = self.settings.get('email')
         self.__dict['date'] = datetime.datetime.now(

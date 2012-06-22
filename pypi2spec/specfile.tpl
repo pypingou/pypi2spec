@@ -8,7 +8,7 @@ Summary:          {{summary}}
 Group:            Development/Languages
 License:          {{license}}
 URL:              {{URL}}
-Source0:          {{source0}}
+Source0:          {{_source0}}
 
 {% if (arch == False) %}BuildArch:        noarch
 {% endif %}
