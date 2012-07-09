@@ -240,7 +240,11 @@ class Pypi2spec(object):
         url = '{url}/{source}'.format(url=url, source=self.source)
         self.log.info('Downloading %s' % url)
 
-        remotefile = urllib2.urlopen(url)
+        try:
+            remotefile = urllib2.urlopen(url)
+        except urllib2.HTTPError, err:
+            self.log.debug(err)
+            raise Pypi2specError('Could not retrieve source: %s' % url)
         localfile = open(sources, 'w')
         localfile.write(remotefile.read())
         localfile.close()
@@ -302,10 +306,26 @@ class Pypi2spec(object):
 
         if not self.source0:
             pypi_base = 'http://pypi.python.org/packages/source/'
-            self.source0 = pypi_base + '%s/%s/%s-%s.tar.gz' % \
+            self.source0 = pypi_base + '%s/%s/%s-%s' % \
                 (self.name[0], self.name, self.name, self.version)
 
-        self.source = '%s-%s.tar.gz' % (self.name, self.version)
+            url_ext = False
+            for ext in ['tar.gz', 'zip']:
+                url = '%s.%s' % (self.source0, ext)
+                try:
+                    urllib2.urlopen(url)
+                    url_ext = ext
+                except urllib2.HTTPError, err:
+                    self.log.debug(err)
+            if url_ext is not False:
+                self.source0 = '%s.%s' % (self.source0, url_ext)
+                self.source = '%s-%s.%s' % (self.name, self.version,
+                    url_ext)
+            else:
+                raise Pypi2specError('No tarball or zip file could be '
+                    'found for this package: %s' % self.name)
+        else:
+            self.source = '%s-%s.tar.gz' % (self.name, self.version)
 
 
 class Pypi2specUI(object):
