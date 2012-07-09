@@ -88,12 +88,35 @@ def move_sources(fullpath, sources):
     shutil.copyfile(fullpath, dest)
 
 
+def get_packager_name():
+    """ Query rpm to retrieve a potential packager name from the 
+    .rpmmacros.
+    """
+    packager = get_rpm_tag('%packager')
+    if not packager.startswith('%'):
+        packager = packager.split('<')[0].strip()
+        return packager
+    else:
+        return ''
+
+def get_packager_email():
+    """ Query rpm to retrieve a potential packager email from the 
+    .rpmmacros.
+    """
+    packager = get_rpm_tag('%packager')
+    if not packager.startswith('%'):
+        packager = packager.split('<', 1)[1].rsplit('>', 1)[0].strip()
+        return packager
+    else:
+        return ''
+
+
 class Settings(object):
     """ Pypi2spec user config Setting"""
     # Editor to use in the spec
-    packager = os.getlogin()
+    packager = get_packager_name()
     # Editor email to use in the spec
-    email = ''
+    email = get_packager_email()
 
     def __init__(self):
         """Constructor of the Settings object.
