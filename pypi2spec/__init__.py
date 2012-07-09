@@ -1,21 +1,22 @@
 #-*- coding: utf-8 -*-
 
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# (C) 2012 - Pierre-Yves Chibon <pingou@pingoured.fr>
+"""
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ (C) 2012 - Pierre-Yves Chibon <pingou@pingoured.fr>
+"""
 
 import argparse
 import ConfigParser
@@ -166,13 +167,14 @@ class Pypi2specError(Exception):
     Template for all the error of the project
     """
 
-    def __init__(self, value):
+    def __init__(self, message):
         """ Constructor. """
-        self.value = value
+        super(Pypi2specError, self).__init__(message)
+        self.message = message
 
     def __str__(self):
         """ Represent the error. """
-        return str(self.value)
+        return str(self.message)
 
 
 class Pypi2spec(object):
@@ -185,6 +187,7 @@ class Pypi2spec(object):
         :arg name, the name of the library on the pypi website.
         """
         self.name = name
+        self.description = ''
         self.log = get_logger()
         self.version = ''
         self.summary = ''
@@ -280,29 +283,29 @@ class Pypi2spec(object):
         file.
         """
         import rdflib
-        g = rdflib.Graph()
+        graph = rdflib.Graph()
         try:
-            g.parse('http://pypi.python.org/pypi?:action=doap&name=%s' % \
+            graph.parse('http://pypi.python.org/pypi?:action=doap&name=%s' % \
                 self.name, format='xml')
         except urllib2.HTTPError, err:
             self.log.debug('ERROR while downloading the doap file:\n  %s'
                 % err)
             raise Pypi2specError('Could not retrieve information for the'
                 'project "%s". Did you make a typo?' % self.name)
-        DOAP = rdflib.Namespace('http://usefulinc.com/ns/doap#')
-        RDFS = rdflib.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-        version_node = g.value(predicate=RDFS['type'],
-            object=DOAP['Version'])
-        self.version = g.value(subject=version_node,
-            predicate=DOAP['revision'])
-        project_node = g.value(predicate=RDFS['type'],
-            object=DOAP['Project'])
-        self.summary = g.value(subject=project_node,
-            predicate=DOAP['shortdesc'])
-        self.description = g.value(subject=project_node,
-            predicate=DOAP['description'])
-        self.source0 = g.value(subject=project_node,
-            predicate=DOAP['download-page'])
+        doap = rdflib.Namespace('http://usefulinc.com/ns/doap#')
+        rdfs = rdflib.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+        version_node = graph.value(predicate=rdfs['type'],
+            object=doap['Version'])
+        self.version = graph.value(subject=version_node,
+            predicate=doap['revision'])
+        project_node = graph.value(predicate=rdfs['type'],
+            object=doap['Project'])
+        self.summary = graph.value(subject=project_node,
+            predicate=doap['shortdesc'])
+        self.description = graph.value(subject=project_node,
+            predicate=doap['description'])
+        self.source0 = graph.value(subject=project_node,
+            predicate=doap['download-page'])
 
         if not self.source0:
             pypi_base = 'http://pypi.python.org/packages/source/'
@@ -330,6 +333,12 @@ class Pypi2spec(object):
 
 class Pypi2specUI(object):
     """ Class handling the user interface. """
+
+    def __init__(self):
+        """ Constructor.
+        """
+        self.parser = None
+        self.log = get_logger()
 
     def setup_parser(self):
         """ Command line parser. """
@@ -375,6 +384,9 @@ class Pypi2specUI(object):
 
 
 def main():
+    """ Entry point used in the setup.py.
+    This just calls the main function in Pypi2specUI.
+    """
     return Pypi2specUI().main()
 
 if __name__ == '__main__':
