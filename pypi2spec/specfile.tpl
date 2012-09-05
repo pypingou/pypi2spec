@@ -1,6 +1,6 @@
-%if 0%{?fedora} > 12 || 0%{?rhel} > 6
+{% if python3 == True %}%if 0%{?fedora} > 12 || 0%{?rhel} > 6
 %global with_python3 1
-%endif
+%endif{%endif%}
 
 %global modname {{name}}
 
@@ -19,67 +19,58 @@ Source0:          {{_source0}}
 
 BuildRequires:    python2-devel
 
-%if 0%{?with_python3}
+{%if python3%}%if 0%{?with_python3}
 BuildRequires:    python3-devel
-%endif
+%endif{%endif%}
 
 %description
 {{description}}
 
-%if 0%{?with_python3}
+{%if python3%}%if 0%{?with_python3}
 %package -n python3-{{name}}
 Summary:        {{summary}}
 Group:          Development/Libraries
 
 %description -n python3-{{name}}
 {{description}}
-%endif
+%endif{%endif%}
 
 %prep
 %setup -q -n %{modname}-%{version}
-
-%if 0%{?with_python3}
+{%if python3%}%if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
-%endif
-
+%endif{%endif%}
 
 %build
 {% if (arch == True) %}CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
-
-%if 0%{?with_python3}
+{%if python3%}%if 0%{?with_python3}
 pushd %{py3dir}
 CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 popd
-%endif
-{% else %}%{__python} setup.py build
-
-%if 0%{?with_python3}
+%endif{%endif%}{% else %}%{__python} setup.py build
+{%if python3%}%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
 %endif
-{% endif %}
-
+{% endif %}{%endif%}
 
 %install
-%if 0%{?with_python3}
+{%if python3%}%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
 popd
-%endif
-
+%endif{%endif%}
 %{__python} setup.py install -O1 --skip-build --root=%{buildroot}
 
 %check
 %{__python} setup.py test
-
-%if 0%{?with_python3}
+{%if python3%}%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py test
 popd
-%endif
-
+%endif{%endif%}
 
 %files
 %doc README.rst LICENSE
@@ -88,7 +79,7 @@ popd
 {% else %}%{python_sitearch}/%{modname}
 %{python_sitearch}/%{modname}-%{version}*
 {% endif %}
-%if 0%{?with_python3}
+{%if python3%}%if 0%{?with_python3}
 %files -n python3-%{modname}
 %doc LICENSE README.rst
 {% if (arch == False) %}%{python3_sitelib}/%{modname}
@@ -96,8 +87,7 @@ popd
 {% else %}%{python3_sitearch}/%{modname}
 %{python3_sitearch}/%{modname}-%{version}*
 {% endif %}
-%endif
-
+%endif{%endif%}
 
 %changelog
 * {{date}} {{packager}} <{{email}}> {{version}}-1
