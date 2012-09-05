@@ -1,3 +1,7 @@
+%if 0%{?fedora} > 12 || 0%{?rhel} > 6
+%global with_python3 1
+%endif
+
 %global modname {{name}}
 
 Name:             python-%{modname}
@@ -5,7 +9,7 @@ Version:          {{version}}
 Release:          1%{?dist}
 Summary:          {{summary}}
 
-Group:            Development/Languages
+Group:            Development/Libraries
 License:          {{license}}
 URL:              {{URL}}
 Source0:          {{_source0}}
@@ -15,29 +19,85 @@ Source0:          {{_source0}}
 
 BuildRequires:    python2-devel
 
+%if 0%{?with_python3}
+BuildRequires:    python3-devel
+%endif
+
 %description
 {{description}}
+
+%if 0%{?with_python3}
+%package -n python3-{{name}}
+Summary:        {{summary}}
+Group:          Development/Libraries
+
+%description -n python3-{{name}}
+{{description}}
+%endif
 
 %prep
 %setup -q -n %{modname}-%{version}
 
+%if 0%{?with_python3}
+rm -rf %{py3dir}
+cp -a . %{py3dir}
+%endif
+
+
 %build
-{% if (arch == True) %} CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
-{% else %}%{__python} setup.py build {% endif %}
+{% if (arch == True) %}CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+
+%if 0%{?with_python3}
+pushd %{py3dir}
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
+popd
+%endif
+{% else %}%{__python} setup.py build
+
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py build
+popd
+%endif
+{% endif %}
+
 
 %install
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
+popd
+%endif
+
+%{__python} setup.py install -O1 --skip-build --root=%{buildroot}
+
+%check
+%{__python} setup.py test
+
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py test
+popd
+%endif
 
 
 %files
-%doc
-{% if (arch == False) %}
-%{python_sitelib}/%{modname}
+%doc README.rst LICENSE
+{% if (arch == False) %}%{python_sitelib}/%{modname}
 %{python_sitelib}/%{modname}-%{version}*
-{% else %}
-%{python_sitearch}/%{modname}
+{% else %}%{python_sitearch}/%{modname}
 %{python_sitearch}/%{modname}-%{version}*
 {% endif %}
+%if 0%{?with_python3}
+%files -n python3-%{modname}
+%doc LICENSE README.rst
+{% if (arch == False) %}%{python3_sitelib}/%{modname}
+%{python3_sitelib}/%{modname}-%{version}-*
+{% else %}%{python3_sitearch}/%{modname}
+%{python3_sitearch}/%{modname}-%{version}*
+{% endif %}
+%endif
+
 
 %changelog
 * {{date}} {{packager}} <{{email}}> {{version}}-1
