@@ -36,6 +36,10 @@ except ImportError:
 def format_description(description):
     """ Format the description as required by rpm """
 
+    # Protect your neck
+    if not description:
+        return ""
+
     # Return the description unadulterated if it is already valid.
     if not any([len(line) > 75 for line in description.split('\n')]):
         return description
@@ -87,7 +91,7 @@ class Spec:
         Write the spec file.
     """
 
-    def __init__(self, settings, package=None):
+    def __init__(self, settings, package=None, python3=False):
         """ Constructor.
         """
         self.package = package
@@ -95,6 +99,7 @@ class Spec:
         self.__dict = {}
         self.log = get_logger()
         self.spec = None
+        self.python3 = python3
 
     def fill_spec_info(self):
         """ Fills the different variable required for the spec file. """
@@ -115,6 +120,7 @@ class Spec:
         self.__dict['email'] = self.settings.get('email')
         self.__dict['date'] = datetime.datetime.now(
             ).strftime("%a %b %d %Y")
+        self.__dict['python3'] = self.python3
 
     def get_specfile(self):
         """ Return the path to the spec file.

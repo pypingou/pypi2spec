@@ -371,6 +371,8 @@ class Pypi2specUI(object):
             version='%(prog)s ' + __version__)
         self.parser.add_argument('package',
             help='Name of the pypi library to package.')
+        self.parser.add_argument('--python3', action='store_true',
+            help='Create a specfile for both python2 and python3.')
         self.parser.add_argument('--verbose', action='store_true',
             help='Give more info about what is going on.')
         self.parser.add_argument('--debug', action='store_true',
@@ -398,7 +400,7 @@ class Pypi2specUI(object):
             pypi.determine_arch()
             pypi.remove_sources()
             settings = Settings()
-            spec = Spec(settings, pypi)
+            spec = Spec(settings, pypi, python3=args.python3)
             spec.fill_spec_info()
             spec.get_template()
             spec.write_spec()
