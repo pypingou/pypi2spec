@@ -36,6 +36,10 @@ except ImportError:
 def format_description(description):
     """ Format the description as required by rpm """
 
+    # Protect your neck
+    if not description:
+        return ""
+
     # Return the description unadulterated if it is already valid.
     if not any([len(line) > 75 for line in description.split('\n')]):
         return description
