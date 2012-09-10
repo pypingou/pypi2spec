@@ -32,7 +32,7 @@ from tarfile import TarError
 logging.basicConfig()
 LOG = logging.getLogger('Pypi2spec')
 #LOG.setLevel('DEBUG')
-__version__ = '0.2.2'
+__version__ = '0.3.0'
 
 
 def create_conf(configfile):
@@ -330,14 +330,17 @@ class Pypi2spec(object):
         self.source0 = graph.value(subject=project_node,
             predicate=doap['download-page'])
 
-        if not self.source0:
+        if not self.source0 \
+            or os.path.splitext(self.source0)[1] not in \
+            ['.gz', '.zip', '.bz2']:
             pypi_base = 'http://pypi.python.org/packages/source/'
             self.source0 = pypi_base + '%s/%s/%s-%s' % \
                 (self.name[0], self.name, self.name, self.version)
 
             url_ext = False
-            for ext in ['tar.gz', 'zip']:
+            for ext in ['tar.gz', 'zip', 'tar.bz2']:
                 url = '%s.%s' % (self.source0, ext)
+                self.log.debug(url)
                 try:
                     urllib2.urlopen(url)
                     url_ext = ext
@@ -415,4 +418,6 @@ def main():
     return Pypi2specUI().main()
 
 if __name__ == '__main__':
+    #import sys
+    #sys.argv.append('pypi2spec')
     main()
