@@ -104,7 +104,10 @@ class Spec:
     def fill_spec_info(self):
         """ Fills the different variable required for the spec file. """
         self.log.info('Filling spec variable from info collected')
-        self.__dict['name'] = self.package.name
+        if self.package.name.startswith('python-'):
+            self.__dict['name'] = self.package.name
+        else:
+            self.__dict['name'] = 'python-%s' % self.package.name
         self.__dict['arch'] = self.package.arch
         self.__dict['version'] = self.package.version
         self.__dict['summary'] = self.package.summary
@@ -126,7 +129,10 @@ class Spec:
         """ Return the path to the spec file.
         """
         specdir = get_rpm_tag('_specdir')
-        specname = 'python-%s.spec' % self.package.name
+        if self.package.name.startswith('python-'):
+            specname = '%s.spec' % self.package.name
+        else:
+            specname = 'python-%s.spec' % self.package.name
         return '%s/%s' % (specdir, specname)
 
     def read_specfile(self):

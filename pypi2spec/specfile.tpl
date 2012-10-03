@@ -4,7 +4,7 @@
 
 %global modname {{name}}
 
-Name:             python-%{modname}
+Name:             %{modname}
 Version:          {{version}}
 Release:          1%{?dist}
 Summary:          {{summary}}
