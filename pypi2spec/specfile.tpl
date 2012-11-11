@@ -37,6 +37,9 @@ Group:          Development/Libraries
 
 %prep
 %setup -q -n %{modname}-%{version}
+
+# Remove bundled egg-info in case it exists
+rm -rf %{modname}.egg-info
 {%if python3%}%if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
