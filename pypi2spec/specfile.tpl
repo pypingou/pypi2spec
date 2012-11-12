@@ -4,23 +4,23 @@
 
 %global modname {{name}}
 
-Name:             %{modname}
-Version:          {{version}}
-Release:          1%{?dist}
-Summary:          {{summary}}
+Name:               %{modname}
+Version:            {{version}}
+Release:            1%{?dist}
+Summary:            {{summary}}
 
-Group:            Development/Libraries
-License:          {{license}}
-URL:              {{URL}}
-Source0:          {{_source0}}
+Group:              Development/Libraries
+License:            {{license}}
+URL:                {{URL}}
+Source0:            {{_source0}}
 
-{% if (arch == False) %}BuildArch:        noarch
+{% if (arch == False) %}BuildArch:          noarch
 {% endif %}
 
-BuildRequires:    python2-devel
+BuildRequires:      python2-devel
 
 {%if python3%}%if 0%{?with_python3}
-BuildRequires:    python3-devel
+BuildRequires:      python3-devel
 %endif{%endif%}
 
 %description
@@ -28,8 +28,8 @@ BuildRequires:    python3-devel
 
 {%if python3%}%if 0%{?with_python3}
 %package -n python3-{{name}}
-Summary:        {{summary}}
-Group:          Development/Libraries
+Summary:            {{summary}}
+Group:              Development/Libraries
 
 %description -n python3-{{name}}
 {{description}}
@@ -77,17 +77,17 @@ popd
 
 %files
 %doc README.rst LICENSE
-{% if (arch == False) %}%{python_sitelib}/%{modname}
+{% if (arch == False) %}%{python_sitelib}/%{modname}/
 %{python_sitelib}/%{modname}-%{version}*
-{% else %}%{python_sitearch}/%{modname}
+{% else %}%{python_sitearch}/%{modname}/
 %{python_sitearch}/%{modname}-%{version}*
 {% endif %}
 {%if python3%}%if 0%{?with_python3}
 %files -n python3-%{modname}
 %doc LICENSE README.rst
-{% if (arch == False) %}%{python3_sitelib}/%{modname}
+{% if (arch == False) %}%{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
-{% else %}%{python3_sitearch}/%{modname}
+{% else %}%{python3_sitearch}/%{modname}/
 %{python3_sitearch}/%{modname}-%{version}*
 {% endif %}
 %endif{%endif%}
