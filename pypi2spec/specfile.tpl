@@ -77,17 +77,17 @@ popd
 
 %files
 %doc README.rst LICENSE
-{% if (arch == False) %}%{python_sitelib}/%{modname}
+{% if (arch == False) %}%{python_sitelib}/%{modname}/
 %{python_sitelib}/%{modname}-%{version}*
-{% else %}%{python_sitearch}/%{modname}
+{% else %}%{python_sitearch}/%{modname}/
 %{python_sitearch}/%{modname}-%{version}*
 {% endif %}
 {%if python3%}%if 0%{?with_python3}
 %files -n python3-%{modname}
 %doc LICENSE README.rst
-{% if (arch == False) %}%{python3_sitelib}/%{modname}
+{% if (arch == False) %}%{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
-{% else %}%{python3_sitearch}/%{modname}
+{% else %}%{python3_sitearch}/%{modname}/
 %{python3_sitearch}/%{modname}-%{version}*
 {% endif %}
 %endif{%endif%}
