@@ -2,9 +2,9 @@
 %global with_python3 1
 %endif{%endif%}
 
-%global modname {{name}}
+%global modname {{modname}}
 
-Name:               %{modname}
+Name:               python-{{barename}}
 Version:            {{version}}
 Release:            1%{?dist}
 Summary:            {{summary}}
@@ -27,11 +27,11 @@ BuildRequires:      python3-devel
 {{description}}
 
 {%if python3%}%if 0%{?with_python3}
-%package -n python3-{{name}}
+%package -n python3-{{barename}}
 Summary:            {{summary}}
 Group:              Development/Libraries
 
-%description -n python3-{{name}}
+%description -n python3-{{barename}}
 {{description}}
 %endif{%endif%}
 
@@ -83,8 +83,8 @@ popd
 %{python_sitearch}/%{modname}-%{version}*
 {% endif %}
 {%if python3%}%if 0%{?with_python3}
-%files -n python3-%{modname}
-%doc LICENSE README.rst
+%files -n python3-{{barename}}
+%doc README.rst LICENSE
 {% if (arch == False) %}%{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
 {% else %}%{python3_sitearch}/%{modname}/
