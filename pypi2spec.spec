@@ -40,7 +40,7 @@ chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
 %{_bindir}/%{name}
 
 %changelog
-* Mon Sep 10 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.3.0-1
+* Mon Dec 17 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.3.0-1
 - Update to 0.3.0
 
 * Mon Jun 18 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.2.2-1
