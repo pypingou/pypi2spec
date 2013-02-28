@@ -176,7 +176,7 @@ class Spec:
         self.log.info('Writing file %s' % specfile)
         try:
             stream = open(specfile, 'w')
-            stream.write(self.spec)
+            stream.write(self.spec.encode('utf-8'))
             stream.close()
             self.log.debug('Spec file writen: %s' % specfile)
             print 'Spec file writen: %s' % specfile
