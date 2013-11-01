@@ -46,12 +46,12 @@ cp -a . %{py3dir}
 %endif{%endif%}
 
 %build
-{% if (arch == True) %}CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+{% if (arch == True) %}CFLAGS="$RPM_OPT_FLAGS" %{__python2} setup.py build
 {%if python3%}%if 0%{?with_python3}
 pushd %{py3dir}
 CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 popd
-%endif{%endif%}{% else %}%{__python} setup.py build
+%endif{%endif%}{% else %}%{__python2} setup.py build
 {%if python3%}%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py build
@@ -65,10 +65,10 @@ pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
 popd
 %endif{%endif%}
-%{__python} setup.py install -O1 --skip-build --root=%{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
 
 %check
-%{__python} setup.py test
+%{__python2} setup.py test
 {%if python3%}%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py test
@@ -77,10 +77,10 @@ popd
 
 %files
 %doc README.rst LICENSE
-{% if (arch == False) %}%{python_sitelib}/%{modname}/
-%{python_sitelib}/%{modname}-%{version}*
-{% else %}%{python_sitearch}/%{modname}/
-%{python_sitearch}/%{modname}-%{version}*
+{% if (arch == False) %}%{python2_sitelib}/%{modname}/
+%{python2_sitelib}/%{modname}-%{version}*
+{% else %}%{python2_sitearch}/%{modname}/
+%{python2_sitearch}/%{modname}-%{version}*
 {% endif %}
 {%if python3%}%if 0%{?with_python3}
 %files -n python3-{{barename}}
