@@ -1,43 +1,35 @@
 Name:           pypi2spec
 Version:        0.3.0
 Release:        1%{?dist}
-Summary:        Python script to generate spec file for pypi projects
-
+Summary:        Python script to generate RPM spec file for PyPI projects
 License:        GPLv3+
 URL:            http://github.com/pypingou/pypi2spec
 Source0:        http://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
-
 BuildArch:      noarch
-BuildRequires:  python-devel,python-setuptools
-
+BuildRequires:  python2-devel,python-setuptools
 Requires:       python-rdflib
 Requires:       python-jinja2
 Requires:       python-argparse
 
 %description
-pypi2spec makes your life easier by helping you to generate
+pypi2spec makes your life easier by helping you to generate RPM
 spec file as close to the Fedora guidelines as possible for
-project hosted on pypi.
+project hosted on PyPI.
 
 %prep
 %setup -q
 
-
 %build
-%{__python} setup.py build
-
+%{__python2} setup.py build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-install pypi2spec/specfile.tpl %{buildroot}/%{python_sitelib}/pypi2spec/
-chmod -x %{buildroot}/%{python_sitelib}/pypi2spec/specfile.tpl
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
+install -pm644 pypi2spec/specfile.tpl %{buildroot}%{python2_sitelib}/pypi2spec/
 
- 
 %files
 %doc LICENSE README
-%{python_sitelib}/*
 %{_bindir}/%{name}
+%{python2_sitelib}/*
 
 %changelog
 * Mon Dec 17 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.3.0-1
