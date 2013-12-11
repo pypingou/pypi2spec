@@ -1,6 +1,6 @@
 Name:           pypi2spec
 Version:        0.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python script to generate RPM spec file for PyPI projects
 License:        GPLv3+
 URL:            http://github.com/pypingou/pypi2spec
@@ -32,6 +32,9 @@ install -pm644 pypi2spec/specfile.tpl %{buildroot}%{python2_sitelib}/pypi2spec/
 %{python2_sitelib}/*
 
 %changelog
+* Tue Dec 10 2013 Christopher Meng <rpm@cicku.me> - 0.3.0-2
+- Beautify SPEC syntax.
+
 * Mon Dec 17 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.3.0-1
 - Update to 0.3.0
 
