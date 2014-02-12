@@ -1,4 +1,4 @@
-{% if python3 == True %}%if 0%{?fedora} > 12
+{% if python3 == True %}%if 0%{?fedora}
 %global with_python3 1
 %endif{%endif%}
 
