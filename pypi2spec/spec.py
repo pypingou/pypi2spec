@@ -134,9 +134,9 @@ class Spec:
         """
         specdir = get_rpm_tag('_specdir')
         if self.package.name.startswith('python-'):
-            specname = '%s.spec' % self.__dict['barename']
+            specname = '%s.spec' % self.__dict['barename'].lower()
         else:
-            specname = 'python-%s.spec' % self.__dict['barename']
+            specname = 'python-%s.spec' % self.__dict['barename'].lower()
         return '%s/%s' % (specdir, specname)
 
     def read_specfile(self):
