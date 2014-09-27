@@ -89,7 +89,7 @@ def move_sources(fullpath, sources):
 
 
 def get_packager_name():
-    """ Query rpm to retrieve a potential packager name from the 
+    """ Query rpm to retrieve a potential packager name from the
     .rpmmacros.
     """
     packager = get_rpm_tag('%packager')
@@ -212,6 +212,7 @@ class Pypi2spec(object):
         self.name = name
         self.description = ''
         self.log = get_logger()
+        #self.log.setLevel(logging.DEBUG)
         self.version = ''
         self.summary = ''
         self.license = ''
@@ -229,8 +230,8 @@ class Pypi2spec(object):
         """
         self.log.info('Determining if the package is arch dependant or not')
         extensions = ['c', 'C', 'cp', 'cpp', 'h', 'H', ]
-        if os.path.exists(self.name):
-            for root, dirs, files in os.walk(self.name):
+        if os.path.exists(self.tardir):
+            for root, dirs, files in os.walk(self.tardir):
                 for entry in files:
                     if '.' in entry:
                         extension = entry.rsplit('.', 1)[1]
@@ -283,6 +284,11 @@ class Pypi2spec(object):
         try:
             tar = tarfile.open(tarball)
             tar.extractall()
+
+            tar_names = tar.getnames()
+            self.tardir = tar_names[0]
+            self.log.debug('self.tardir = %s', self.tardir)
+
             tar.close()
         except TarError, err:
             self.log.debug("Error while extracting the tarball")
@@ -292,47 +298,42 @@ class Pypi2spec(object):
         """ Remove the source we extracted in the current working
         directory.
         """
-        source = '%s-%s' % (self.name, self.version)
-        self.log.info('Removing extracted sources: "%s"' % source)
+        self.log.info('Removing extracted sources: "%s"' % self.tardir)
         try:
-            shutil.rmtree(source)
+            shutil.rmtree(self.tardir)
         except (IOError, OSError), err:
-            self.log.info('Could not remove the extracted sources: "%s"'\
-                % source)
+            self.log.info('Could not remove the extracted sources: "%s"'
+                          % self.tardir)
             self.log.debug('ERROR: %s' % err)
 
     def retrieve_info(self):
         """ Retrieve all the information from pypi to fill up the spec
         file.
         """
-        import rdflib
-        graph = rdflib.Graph()
+        import json
+        import urllib2
+        import collections
+        URLTEMPL = 'https://pypi.python.org/pypi/%s/json'
         try:
-            graph.parse('http://pypi.python.org/pypi?:action=doap&name=%s' % \
-                self.name, format='xml')
-        except urllib2.HTTPError, err:
-            self.log.debug('ERROR while downloading the doap file:\n  %s'
-                % err)
+            fp = urllib2.urlopen(URLTEMPL % self.name)
+            data = json.load(fp, object_pairs_hook=collections.OrderedDict)
+        except urllib2.HTTPError as err:
+            self.log.debug('ERROR while downloading metadata:\n  %s'
+                           % err)
             raise Pypi2specError('Could not retrieve information for the'
-                'project "%s". Did you make a typo?' % self.name)
-        doap = rdflib.Namespace('http://usefulinc.com/ns/doap#')
-        rdfs = rdflib.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-        version_node = graph.value(predicate=rdfs['type'],
-            object=doap['Version'])
-        self.version = graph.value(subject=version_node,
-            predicate=doap['revision'])
-        project_node = graph.value(predicate=rdfs['type'],
-            object=doap['Project'])
-        self.summary = graph.value(subject=project_node,
-            predicate=doap['shortdesc'])
-        self.description = graph.value(subject=project_node,
-            predicate=doap['description'])
-        self.source0 = graph.value(subject=project_node,
-            predicate=doap['download-page'])
+                                 'project "%s". Did you make a typo?'
+                                 % self.name)
+
+        self.version = data[u'info'][u'version']
+        self.summary = data[u'info'][u'summary']
+        self.description = data[u'info'][u'description']
+        self.source0 = data[u'urls'][1][u'url']
+        LOG.debug('self.source0 = %s', self.source0)
 
         if not self.source0 \
             or os.path.splitext(self.source0)[1] not in \
-            ['.gz', '.zip', '.bz2']:
+                ['.gz', '.zip', '.bz2']:
+            LOG.debug("We don’t have good URL!")
             pypi_base = 'http://pypi.python.org/packages/source/'
             self.source0 = pypi_base + '%s/%s/%s-%s' % \
                 (self.name[0], self.name, self.name, self.version)
@@ -349,12 +350,18 @@ class Pypi2spec(object):
             if url_ext is not False:
                 self.source0 = '%s.%s' % (self.source0, url_ext)
                 self.source = '%s-%s.%s' % (self.name, self.version,
-                    url_ext)
+                                            url_ext)
             else:
                 raise Pypi2specError('No tarball or zip file could be '
-                    'found for this package: %s' % self.name)
+                                     'found for this package: %s'
+                                     % self.name)
         else:
-            self.source = '%s-%s.tar.gz' % (self.name, self.version)
+            #self.source = '%s-%s.tar.gz' % (self.name, self.version)
+            split_url = urllib2.urlparse.urlsplit(self.source0)
+            self.source = os.path.basename(split_url.path)
+
+        LOG.debug('self.source0 = %s', self.source0)
+        LOG.debug('self.source = %s', self.source)
 
 
 class Pypi2specUI(object):

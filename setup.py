@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-import sys
-import re
-
 from setuptools import setup
 from pypi2spec import __version__
 
@@ -14,7 +11,6 @@ pypi2spec makes you life easier at packaging pypi project for Fedora.
 download_url = "http://pypi.python.org/packages/source/p/pypi2spec/pypi2spec-%s.tar.gz" % __version__
 
 requirements = [
-    'rdflib',
     'jinja2',
 ]
 
@@ -42,13 +38,12 @@ setup(
     [console_scripts]
     pypi2spec = pypi2spec:main
     """,
-    classifiers = [
+    classifiers=[
         "Programming Language :: Python",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Operating System :: OS Independent",
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Environment :: Console",
-        ],
-
+    ],
 )
