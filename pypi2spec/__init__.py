@@ -219,6 +219,7 @@ class Pypi2spec(object):
         self.url = 'http://pypi.python.org/pypi/%s' % name
         self.source0 = ''
         self.source = ''
+        self.tardir = ''
         self.arch = False
 
     def determine_arch(self):
@@ -248,6 +249,13 @@ class Pypi2spec(object):
             self.log.info(
                 'Could not find the extracted source to search the arch')
 
+    def __set_tardir(self, tfile):
+        if isinstance(tarfile, basestring):
+            tfile = tarfile.open(tfile)
+        tar_names = tfile.getnames()
+        self.tardir = tar_names[0]
+        self.log.debug('self.tardir = %s', self.tardir)
+
     def download(self, force=False):
         """ Download the source of the package into the source directory
         which we retrieve from rpm directly.
@@ -261,6 +269,7 @@ class Pypi2spec(object):
         if not force and os.path.exists(sources) and os.path.isfile(sources):
             self.log.info(
                 "Sources are already present, no need to re-download")
+            self.__set_tardir(sources)
             return
 
         url = self.source0.rsplit('/', 1)[0]
@@ -284,10 +293,7 @@ class Pypi2spec(object):
         try:
             tar = tarfile.open(tarball)
             tar.extractall()
-
-            tar_names = tar.getnames()
-            self.tardir = tar_names[0]
-            self.log.debug('self.tardir = %s', self.tardir)
+            self.__set_tardir(tar)
 
             tar.close()
         except TarError, err:
