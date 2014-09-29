@@ -17,17 +17,16 @@
 
  (C) 2012 - Pierre-Yves Chibon <pingou@pingoured.fr>
 """
-
-import argparse
 import ConfigParser
+import argparse
 import logging
+import os
 import shutil
 import tarfile
-import os
 import urllib2
-
 from subprocess import Popen, PIPE
 from tarfile import TarError
+
 
 logging.basicConfig()
 LOG = logging.getLogger('Pypi2spec')
@@ -99,8 +98,9 @@ def get_packager_name():
     else:
         return ''
 
+
 def get_packager_email():
-    """ Query rpm to retrieve a potential packager email from the 
+    """ Query rpm to retrieve a potential packager email from the
     .rpmmacros.
     """
     packager = get_rpm_tag('%packager')
@@ -124,9 +124,9 @@ class Settings(object):
         attributes the default configuration which each available option.
         """
         self._dict = {
-                        'packager': self.packager,
-                        'email': self.email,
-                    }
+            'packager': self.packager,
+            'email': self.email,
+        }
         self.load_config('.config/pypi2spec', 'main')
 
     def load_config(self, configfile, sec):
@@ -311,7 +311,6 @@ class Pypi2spec(object):
         file.
         """
         import json
-        import urllib2
         import collections
         URLTEMPL = 'https://pypi.python.org/pypi/%s/json'
         try:
@@ -376,17 +375,19 @@ class Pypi2specUI(object):
     def setup_parser(self):
         """ Command line parser. """
         self.parser = argparse.ArgumentParser(usage='%(prog)s [options]',
-                prog='pypi2spec')
+                                              prog='pypi2spec')
         self.parser.add_argument('--version', action='version',
-            version='%(prog)s ' + __version__)
+                                 version='%(prog)s ' + __version__)
         self.parser.add_argument('package',
-            help='Name of the pypi library to package.')
+                                 help='Name of the pypi library to package.')
         self.parser.add_argument('--python3', action='store_true',
-            help='Create a specfile for both python2 and python3.')
+                                 help='Create a specfile for both ' +
+                                 'python2 and python3.')
         self.parser.add_argument('--verbose', action='store_true',
-            help='Give more info about what is going on.')
+                                 help='Give more info about what is ' +
+                                 'going on.')
         self.parser.add_argument('--debug', action='store_true',
-            help='Output bunches of debugging info.')
+                                 help='Output bunches of debugging info.')
 
     def main(self):
         """ Main function.
