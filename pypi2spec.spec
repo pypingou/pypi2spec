@@ -1,13 +1,12 @@
 Name:           pypi2spec
 Version:        0.4.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python script to generate RPM spec file for PyPI projects
 License:        GPLv3+
 URL:            http://github.com/pypingou/pypi2spec
 Source0:        http://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  python2-devel,python-setuptools
-Requires:       python-rdflib
 Requires:       python-jinja2
 Requires:       python-argparse
 
@@ -32,6 +31,9 @@ install -pm644 pypi2spec/specfile.tpl %{buildroot}%{python2_sitelib}/pypi2spec/
 %{python2_sitelib}/*
 
 %changelog
+* Tue Sep 30 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.4.0-2
+- Drop python-rdflib as a Requires
+
 * Tue Sep 30 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.4.0-1
 - Update to 0.4.0
 - Drop the doap format in favor of the json output
