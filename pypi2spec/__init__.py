@@ -332,7 +332,12 @@ class Pypi2spec(object):
         self.version = data[u'info'][u'version']
         self.summary = data[u'info'][u'summary']
         self.description = data[u'info'][u'description']
-        self.source0 = data[u'urls'][1][u'url']
+        
+        self.source0 = [
+            url['url']
+            for url in data[u'urls']
+            if url['url'].endswith('tar.gz')
+        ][0]
         LOG.debug('self.source0 = %s', self.source0)
 
         if not self.source0 \
