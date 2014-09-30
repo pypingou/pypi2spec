@@ -7,6 +7,5 @@ http://pypi.python.org/pypi
 
 Dependencies:
 ------------
-- python-rdflib >= 3.0.0
 - python-argparse
 - python-jinja2
