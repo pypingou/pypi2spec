@@ -2,6 +2,8 @@
 %global with_python3 1
 %endif{%endif%}
 
+%{!?_licensedir: %global license %%doc}
+
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %{!?__python2:        %global __python2 /usr/bin/python2}
 %{!?python2_sitelib:  %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -82,7 +84,8 @@ popd
 %endif{%endif%}
 
 %files
-%doc README.rst LICENSE
+%doc README.rst
+%license LICENSE
 {% if (arch == False) %}%{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*
 {% else %}%{python2_sitearch}/%{modname}/
@@ -90,7 +93,8 @@ popd
 {% endif %}
 {%if python3%}%if 0%{?with_python3}
 %files -n python3-{{barename}}
-%doc README.rst LICENSE
+%doc README.rst
+%license LICENSE
 {% if (arch == False) %}%{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
 {% else %}%{python3_sitearch}/%{modname}/
