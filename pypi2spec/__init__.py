@@ -336,7 +336,7 @@ class Pypi2spec(object):
         self.source0 = [
             url['url']
             for url in data[u'urls']
-            if url['url'].endswith('tar.gz')
+            if url['url'].endswith('tar.gz') or url['url'].endswith('zip')
         ][0]
         LOG.debug('self.source0 = %s', self.source0)
 
