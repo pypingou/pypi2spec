@@ -31,7 +31,7 @@ from tarfile import TarError
 logging.basicConfig()
 LOG = logging.getLogger('Pypi2spec')
 #LOG.setLevel('DEBUG')
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
 
 def create_conf(configfile):
