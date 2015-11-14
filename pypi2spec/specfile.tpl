@@ -1,6 +1,6 @@
-{% if python3 == True %}%if 0%{?fedora}
+%if 0%{?fedora}
 %global with_python3 1
-%endif{%endif%}
+%endif
 
 %{!?_licensedir: %global license %%doc}
 
@@ -26,82 +26,70 @@ Source0:            {{_source0}}
 {% endif %}
 
 BuildRequires:      python2-devel
-
-{%if python3%}%if 0%{?with_python3}
+BuildRequires:      python2-setuptools
+%if 0%{?with_python3}
 BuildRequires:      python3-devel
-%endif{%endif%}
+BuildRequires:      python3-setuptools
+%endif
 
 %description
 {{description}}
 
-{%if python3%}%if 0%{?with_python3}
-%package -n python3-{{barename}}
+%package -n python2-%{modname}
 Summary:            {{summary}}
-Group:              Development/Libraries
+%{?python_provide:%python_provide python2-%{module}}
 
-%description -n python3-{{barename}}
+Requires:           python2-...
+
+%description -n python2-%{modname}
 {{description}}
-%endif{%endif%}
+
+%if 0%{?with_python3}
+%package -n python3-%{modname}
+Summary:            {{summary}}
+%{?python_provide:%python_provide python3-%{module}}
+
+Requires:           python3-...
+
+%description -n python3-%{modname}
+{{description}}
+%endif
 
 %prep
-%setup -q -n %{modname}-%{version}
-
-# Remove bundled egg-info in case it exists
-rm -rf %{modname}.egg-info
-{%if python3%}%if 0%{?with_python3}
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-%endif{%endif%}
+%autosetup -n %{modname}-%{version}
 
 %build
-{% if (arch == True) %}CFLAGS="$RPM_OPT_FLAGS" %{__python2} setup.py build
-{%if python3%}%if 0%{?with_python3}
-pushd %{py3dir}
-CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
-popd
-%endif{%endif%}{% else %}%{__python2} setup.py build
-{%if python3%}%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py build
-popd
+%py2_build
+%if 0%{?with_python3}
+%py3_build
 %endif
-{% endif %}{%endif%}
 
 %install
-{%if python3%}%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
-popd
-%endif{%endif%}
-%{__python2} setup.py install -O1 --skip-build --root=%{buildroot}
+%py2_install
+%if 0%{?with_python3}
+%py3_install
+%endif
 
 %check
 %{__python2} setup.py test
-{%if python3%}%if 0%{?with_python3}
-pushd %{py3dir}
+%if 0%{?with_python3}
 %{__python3} setup.py test
-popd
-%endif{%endif%}
+%endif
 
-%files
+%files -n python2-%{modname}
 %doc README.rst
 %license LICENSE
-{% if (arch == False) %}%{python2_sitelib}/%{modname}/
+%{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*
-{% else %}%{python2_sitearch}/%{modname}/
-%{python2_sitearch}/%{modname}-%{version}*
-{% endif %}
-{%if python3%}%if 0%{?with_python3}
-%files -n python3-{{barename}}
+
+%if 0%{?with_python3}
+%files -n python3-%{modname}
 %doc README.rst
 %license LICENSE
-{% if (arch == False) %}%{python3_sitelib}/%{modname}/
+%{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
-{% else %}%{python3_sitearch}/%{modname}/
-%{python3_sitearch}/%{modname}-%{version}*
-{% endif %}
-%endif{%endif%}
+%endif
 
 %changelog
 * {{date}} {{packager}} <{{email}}> {{version}}-1
-- initial package for Fedora
+- Initial packaging for Fedora.
