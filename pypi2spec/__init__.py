@@ -332,17 +332,17 @@ class Pypi2spec(object):
         self.version = data[u'info'][u'version']
         self.summary = data[u'info'][u'summary']
         self.description = data[u'info'][u'description']
-        
+
         self.source0 = [
             url['url']
             for url in data[u'urls']
-            if url['url'].endswith('tar.gz') or url['url'].endswith('zip')
+            if url['url'].endswith('tar.gz') or url['url'].endswith('zip') or url['url'].endswith('whl')
         ][0]
-        LOG.debug('self.source0 = %s', self.source0)
+        LOG.info('self.source0 = %s', self.source0)
 
         if not self.source0 \
             or os.path.splitext(self.source0)[1] not in \
-                ['.gz', '.zip', '.bz2']:
+                ['.gz', '.zip', '.bz2', '.whl']:
             LOG.debug("We don’t have good URL!")
             pypi_base = 'http://pypi.python.org/packages/source/'
             self.source0 = pypi_base + '%s/%s/%s-%s' % \
