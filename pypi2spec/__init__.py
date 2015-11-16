@@ -250,7 +250,7 @@ class Pypi2spec(object):
                 'Could not find the extracted source to search the arch')
 
     def __set_tardir(self, tfile):
-        if isinstance(tarfile, basestring):
+        if isinstance(tfile, basestring):
             tfile = tarfile.open(tfile)
         tar_names = tfile.getnames()
         self.tardir = tar_names[0]
