@@ -11,19 +11,20 @@
 %endif
 
 %global modname {{modname}}
+%global sum     {{summary}}
 
 Name:               python-{{barename}}
 Version:            {{version}}
 Release:            1%{?dist}
-Summary:            {{summary}}
+Summary:            %{sum}
 
-Group:              Development/Libraries
 License:            {{license}}
 URL:                {{URL}}
 Source0:            {{_source0}}
 
-{% if (arch == False) %}BuildArch:          noarch
-{% endif %}
+{% if (arch == False) -%}
+BuildArch:          noarch
+{%- endif %}
 
 BuildRequires:      python2-devel
 BuildRequires:      python2-setuptools
@@ -43,6 +44,7 @@ Requires:           python2-...
 
 %description -n python2-%{modname}
 {{description}}
+
 
 %if 0%{?with_python3}
 %package -n python3-%{modname}
@@ -79,15 +81,25 @@ Requires:           python3-...
 %files -n python2-%{modname}
 %doc README.rst
 %license LICENSE
+{% if (arch == False) -%}
 %{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*
+{%- else -%}
+%{python2_sitearch}/%{modname}/
+%{python2_sitearch}/%{modname}-%{version}*
+{%- endif %}
 
 %if 0%{?with_python3}
 %files -n python3-%{modname}
 %doc README.rst
 %license LICENSE
+{% if (arch == False) -%}
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
+{%- else -%}
+%{python3_sitearch}/%{modname}/
+%{python3_sitearch}/%{modname}-%{version}*
+{%- endif -%}
 %endif
 
 %changelog
