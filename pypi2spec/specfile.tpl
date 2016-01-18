@@ -10,50 +10,54 @@
 %{!?python2_sitearch: %global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %endif
 
-%global modname {{modname}}
+%global modname {{ modname }}
+%global sum     {{ summary }}
 
-Name:               python-{{barename}}
-Version:            {{version}}
+Name:               python-{{ barename }}
+Version:            {{ version }}
 Release:            1%{?dist}
-Summary:            {{summary}}
+Summary:            %{sum}
 
-Group:              Development/Libraries
-License:            {{license}}
-URL:                {{URL}}
-Source0:            {{_source0}}
+License:            {{ license }}
+URL:                {{ URL }}
+Source0:            {{ _source0 }}
 
-{% if (arch == False) %}BuildArch:          noarch
-{% endif %}
+{%- if (arch == False) -%}
+BuildArch:          noarch
+{%- endif %}
 
 BuildRequires:      python2-devel
 BuildRequires:      python2-setuptools
+
 %if 0%{?with_python3}
 BuildRequires:      python3-devel
 BuildRequires:      python3-setuptools
 %endif
 
 %description
-{{description}}
+{{ description }}
 
 %package -n python2-%{modname}
-Summary:            {{summary}}
+Summary:            {{ summary }}
 %{?python_provide:%python_provide python2-%{modname}}
 
 Requires:           python2-...
 
 %description -n python2-%{modname}
-{{description}}
+{{ description }}
+
 
 %if 0%{?with_python3}
 %package -n python3-%{modname}
-Summary:            {{summary}}
+Summary:            {{ summary }}
 %{?python_provide:%python_provide python3-%{modname}}
 
 Requires:           python3-...
 
 %description -n python3-%{modname}
-{{description}}
+{{ description }}
 %endif
+
 
 %prep
 %autosetup -n %{modname}-%{version}
@@ -79,17 +83,27 @@ Requires:           python3-...
 %files -n python2-%{modname}
 %doc README.rst
 %license LICENSE
+{% if (arch == False) -%}
 %{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-%{version}*
+{%- else -%}
+%{python2_sitearch}/%{modname}/
+%{python2_sitearch}/%{modname}-%{version}*
+{%- endif %}
 
 %if 0%{?with_python3}
 %files -n python3-%{modname}
 %doc README.rst
 %license LICENSE
+{% if (arch == False) -%}
 %{python3_sitelib}/%{modname}/
 %{python3_sitelib}/%{modname}-%{version}-*
+{%- else -%}
+%{python3_sitearch}/%{modname}/
+%{python3_sitearch}/%{modname}-%{version}*
+{%- endif -%}
 %endif
 
 %changelog
-* {{date}} {{packager}} <{{email}}> {{version}}-1
-- Initial packaging for Fedora.
+* {{ date }} {{ packager }} <{{ email }}> {{ version }}-1
+- initial package for Fedora
