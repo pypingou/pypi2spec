@@ -37,7 +37,7 @@ BuildRequires:      python3-setuptools
 
 %package -n python2-%{modname}
 Summary:            {{summary}}
-%{?python_provide:%python_provide python2-%{module}}
+%{?python_provide:%python_provide python2-%{modname}}
 
 Requires:           python2-...
 
@@ -47,7 +47,7 @@ Requires:           python2-...
 %if 0%{?with_python3}
 %package -n python3-%{modname}
 Summary:            {{summary}}
-%{?python_provide:%python_provide python3-%{module}}
+%{?python_provide:%python_provide python3-%{modname}}
 
 Requires:           python3-...
 
