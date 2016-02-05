@@ -1,6 +1,6 @@
 Name:           pypi2spec
-Version:        0.4.0
-Release:        2%{?dist}
+Version:        0.5.0
+Release:        1%{?dist}
 Summary:        Python script to generate RPM spec file for PyPI projects
 License:        GPLv3+
 URL:            http://github.com/pypingou/pypi2spec
@@ -31,6 +31,9 @@ install -pm644 pypi2spec/specfile.tpl %{buildroot}%{python2_sitelib}/pypi2spec/
 %{python2_sitelib}/*
 
 %changelog
+* Fri Feb 05 2016 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.5.0-1
+- Update spec template to the latest guidelines
+
 * Tue Sep 30 2014 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.4.0-2
 - Drop python-rdflib as a Requires
 
