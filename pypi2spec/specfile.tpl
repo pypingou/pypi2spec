@@ -101,7 +101,7 @@ Requires:           python3-...
 {%- else -%}
 %{python3_sitearch}/%{modname}/
 %{python3_sitearch}/%{modname}-%{version}*
-{%- endif -%}
+{%- endif %}
 %endif
 
 %changelog
